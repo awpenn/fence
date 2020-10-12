@@ -19,6 +19,9 @@ from fence.blueprints.login.shib import ShibbolethLogin, ShibbolethCallback
 from fence.blueprints.login.microsoft import MicrosoftLogin, MicrosoftCallback
 from fence.blueprints.login.orcid import ORCIDLogin, ORCIDCallback
 from fence.blueprints.login.ras import RASLogin, RASCallback
+
+from fence.blueprints.login.dss import DSSLogin, DSSCallback
+
 from fence.blueprints.login.synapse import SynapseLogin, SynapseCallback
 from fence.errors import InternalError
 from fence.restful import RestfulApi
@@ -36,6 +39,7 @@ IDP_URL_MAP = {
     "microsoft": "microsoft",
     "cognito": "cognito",
     "ras": "ras",
+    "dss": "dss"
 }
 
 
@@ -247,6 +251,10 @@ def make_login_blueprint(app):
     if "fence" in configured_idps:
         blueprint_api.add_resource(FenceLogin, "/fence", strict_slashes=False)
         blueprint_api.add_resource(FenceCallback, "/fence/login", strict_slashes=False)
+
+    if "dss" in configured_idps:
+        blueprint_api.add_resource(DSSLogin, "/dss", strict_slashes=False)
+        blueprint_api.add_resource(DSSCallback, "/dss/login", strict_slashes=False)
 
     if "google" in configured_idps:
         blueprint_api.add_resource(GoogleLogin, "/google", strict_slashes=False)
